@@ -72,7 +72,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Create cache
-      uses: Fenikks/gh-action-cache@v1
+      uses: Fenikks/gh-actions-cache@v1
       with:
         cache_action: save
         cache_path: ${GITHUB_WORKSPACE}/.cache
@@ -100,7 +100,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Create cache
-      uses: Fenikks/gh-action-cache@v1
+      uses: Fenikks/gh-actions-cache@v1
       with:
         cache_action: restore
         cache_path: ${GITHUB_WORKSPACE}/.cache
@@ -134,7 +134,7 @@ Additionally, you can use arbitrary command output in a cache key, such as a dat
       echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
     shell: bash
 
-  - uses: Fenikks/gh-action-cache@v1
+  - uses: Fenikks/gh-actions-cache@v1
     with:
       cache_action: save
       cache_path: ${GITHUB_WORKSPACE}/.cache

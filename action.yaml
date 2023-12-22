@@ -23,6 +23,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - run: cache.sh
+  - run: ./cache.sh
     shell: bash
 
