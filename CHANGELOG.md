@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.5](https://github.com/Fenikks/gh-actions-cache/compare/v1.0.4...v1.0.5) (2023-12-26)
+
+
+### Bug Fixes
+
+* validate inputs ([c30595e](https://github.com/Fenikks/gh-actions-cache/commit/c30595e07c31fd96de789a74b3bfbba982cd3d0a))
+* validate inputs ([8f1334c](https://github.com/Fenikks/gh-actions-cache/commit/8f1334c7344139b153d5c34b5014dfa914ab94cc))
+
 ## [1.0.4](https://github.com/Fenikks/gh-actions-cache/compare/v1.0.3...v1.0.4) (2023-12-26)
 
 
