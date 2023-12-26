@@ -24,8 +24,8 @@ function validate_inputs(){
     fi
 
     if [[ -z $AWS_ACCESS_KEY_ID && -z $AWS_SECRET_ACCESS_KEY && -z $AWS_REGION ]]; then
-        echo 1
-        return
+        echo variable undefined
+        return 1
     fi
 
     echo 0
@@ -103,9 +103,9 @@ echo CACHE_PATH is $INPUT_CACHE_PATH
 echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
 echo CACHE_KEY is $INPUT_CACHE_KEY
 echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
-echo AWS_REGION is $AWS_REGION
-echo AWS_SECRET_ACCESS_KEY is $AWS_SECRET_ACCESS_KEY
-echo AWS_ACCESS_KEY_ID is $AWS_ACCESS_KEY_ID
+# echo AWS_REGION is $AWS_REGION
+# echo AWS_SECRET_ACCESS_KEY is $AWS_SECRET_ACCESS_KEY
+# echo AWS_ACCESS_KEY_ID is $AWS_ACCESS_KEY_ID
 
 echo "---------------------------------------------------------"
 echo "Current directory"
