@@ -102,6 +102,7 @@ echo CACHE_PATH is $INPUT_CACHE_PATH
 echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
 echo CACHE_KEY is $INPUT_CACHE_KEY
 echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
+
 echo "---------------------------------------------------------"
 echo "Current directory"
 pwd
