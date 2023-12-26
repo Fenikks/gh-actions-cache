@@ -3,6 +3,8 @@
 set -euo pipefail
 
 function validate_inputs(){
+    echo "Inside validate_inputs"
+
     if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
         echo "::notice:: check number 1"
         return 1 
@@ -27,7 +29,7 @@ function validate_inputs(){
         echo "::notice:: check number 5"
         return 3
     fi
-
+    echo "::notice:: return 0"
     return 0
 }
 
