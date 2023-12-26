@@ -104,9 +104,9 @@ pwd
 echo "---------------------------------------------------------"
 
 validate_result=$(validate_inputs)
-
-case $validate_result in
-    0) 
+echo validate_result is $validate_result
+case "$validate_result" in
+    "0") 
         echo "Proceed main logic"
             # if [[ "$1" == 'save' ]]; then
             #     CACHE_KEY=$4
@@ -128,17 +128,17 @@ case $validate_result in
             #     restore_cache
         ;;
 
-    1) 
+    "1") 
         echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
         exit 1
         ;;
 
-    2) 
+    "2") 
         echo "::error:: Incorrect cache_action. Must be 'save' or 'restore'."
         exit 1
         ;;
 
-    3) 
+    "3") 
         echo "::error:: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION must be set"
         exit 1
         ;;
