@@ -96,6 +96,10 @@ function restore_cache() {
 
 # Main logic
 echo "--------------------- DEBUG MESSAGE ---------------------"
+echo reading environments
+env
+echo $GITHUB_ENV
+echo "---------------------------------------------------------"
 echo ACTION is $INPUT_CACHE_ACTION
 echo CACHE_PATH is $INPUT_CACHE_PATH
 echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
