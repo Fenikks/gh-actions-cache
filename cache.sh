@@ -111,6 +111,8 @@ pwd
 echo "---------------------------------------------------------"
 
 validate_result=$(validate_inputs)
+echo "validate result is"
+echo $validate_result
 
 case $validate_result in
     0) 
