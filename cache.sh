@@ -2,39 +2,6 @@
 
 set -euo pipefail
 
-function validate_inputs(){
-    echo inside valudate_inputs
-
-    if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
-        echo inside check 1
-        return 1
-    fi
-
-    if [[ "$INPUT_CACHE_ACTION" != 'save' ]] && [[ "$INPUT_CACHE_ACTION" != 'restore' ]]; then
-        echo inside check 2
-        return 2
-    fi
-
-    if [[ "$INPUT_CACHE_ACTION" == "save" && -z "$INPUT_CACHE_KEY" ]]; then
-        echo inside check 3
-        return 1
-    fi
-
-    if [[ "$INPUT_CACHE_ACTION" == "restore" && -z "$INPUT_RESTORE_KEYS" ]]; then
-        echo inside check 4
-        return 1
-    fi
-
-    if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]; then
-        echo inside check 5
-        echo variable undefined
-        return 3
-    fi
-
-    echo after all checks
-    return 0
-}
-
 function save_cache() {
     
     if [[ $(aws s3 ls s3://${S3_BUCKET}/${CACHE_KEY}/ --region $AWS_REGION | head) ]]; then
@@ -119,44 +86,58 @@ validate_inputs
 echo "---------------------------------------------------------"
 validate_result=$(validate_inputs)
 echo validate_result is $validate_result
-case $validate_result in
-    0) 
-        echo "Proceed main logic"
-            # if [[ "$1" == 'save' ]]; then
-            #     CACHE_KEY=$4
-            #     echo "--------------------- DEBUG MESSAGE ---------------------"
-            #     echo ACTION is $ACTION
-            #     echo CACHE_PATH is $CACHE_PATH
-            #     echo S3_BUCKET is $S3_BUCKET
-            #     echo CACHE_KEY is $CACHE_KEY
-            #     echo "---------------------------------------------------------"
-            #     save_cache
-            # elif [[ "$1" == 'restore' ]]; then
-            #     RESTORE_KEYS=$(echo $4|tr ',' ' ')
-            #     echo "--------------------- DEBUG MESSAGE ---------------------"
-            #     echo ACTION is $ACTION
-            #     echo CACHE_PATH is $CACHE_PATH
-            #     echo S3_BUCKET is $S3_BUCKET
-            #     echo RESTORE_KEYS are $RESTORE_KEYS
-            #     echo "---------------------------------------------------------"
-            #     restore_cache
-        ;;
 
-    1) 
-        echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
-        exit 1
-        ;;
 
-    2) 
-        echo "::error:: Incorrect cache_action. Must be 'save' or 'restore'."
-        exit 1
-        ;;
+#### check if all necessary variables are set
 
-    3) 
-        echo "::error:: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION must be set"
-        exit 1
-        ;;
-esac
+if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
+    echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
+    exit 1
+
+fi
+
+if [[ "$INPUT_CACHE_ACTION" != 'save' ]] && [[ "$INPUT_CACHE_ACTION" != 'restore' ]]; then
+    echo "::error:: Incorrect cache_action. Must be 'save' or 'restore'."
+    exit 1
+fi
+
+if [[ "$INPUT_CACHE_ACTION" == "save" && -z "$INPUT_CACHE_KEY" ]]; then
+    echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
+    exit 1
+fi
+
+if [[ "$INPUT_CACHE_ACTION" == "restore" && -z "$INPUT_RESTORE_KEYS" ]]; then
+    echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
+    exit 1
+fi
+
+if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]; then
+    echo "::error:: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION must be set"
+    exit 1
+fi
+
+### Main logic
+
+echo "Proceed main logic"
+# if [[ "$1" == 'save' ]]; then
+#     CACHE_KEY=$4
+#     echo "--------------------- DEBUG MESSAGE ---------------------"
+#     echo ACTION is $ACTION
+#     echo CACHE_PATH is $CACHE_PATH
+#     echo S3_BUCKET is $S3_BUCKET
+#     echo CACHE_KEY is $CACHE_KEY
+#     echo "---------------------------------------------------------"
+#     save_cache
+# elif [[ "$1" == 'restore' ]]; then
+#     RESTORE_KEYS=$(echo $4|tr ',' ' ')
+#     echo "--------------------- DEBUG MESSAGE ---------------------"
+#     echo ACTION is $ACTION
+#     echo CACHE_PATH is $CACHE_PATH
+#     echo S3_BUCKET is $S3_BUCKET
+#     echo RESTORE_KEYS are $RESTORE_KEYS
+#     echo "---------------------------------------------------------"
+#     restore_cache
+
 
 # trap fix_owners EXIT
 
