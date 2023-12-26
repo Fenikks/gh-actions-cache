@@ -44,7 +44,9 @@ function restore_cache() {
             echo k is $k
             echo "---------------------------------------------------------"
             tmp_dir="$(mktemp -d)"
+            echo "currnet path `pwd`"
             mkdir -p $CACHE_PATH
+            ls -la
             time aws s3 cp s3://${S3_BUCKET}/${k//\//}/archive.tgz $tmp_dir/archive.tgz --region $AWS_REGION > /dev/null
             tar xzf "${tmp_dir}/archive.tgz" -C $CACHE_PATH #> /dev/null
         
@@ -63,24 +65,6 @@ function restore_cache() {
 #         debug_cmd ls -la "$GITHUB_WORKSPACE/.gh-actions-terragrunt"
 #     fi
 # }
-
-
-# Main logic
-echo "--------------------- DEBUG MESSAGE ---------------------"
-
-echo ACTION is $INPUT_CACHE_ACTION
-echo CACHE_PATH is $INPUT_CACHE_PATH
-echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
-echo CACHE_KEY is $INPUT_CACHE_KEY
-echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
-# echo AWS_REGION is $AWS_REGION
-# echo AWS_SECRET_ACCESS_KEY is $AWS_SECRET_ACCESS_KEY
-# echo AWS_ACCESS_KEY_ID is $AWS_ACCESS_KEY_ID
-
-echo "---------------------------------------------------------"
-echo "Current directory"
-pwd
-echo "---------------------------------------------------------"
 
 # Check if all necessary variables are set
 
@@ -113,49 +97,32 @@ fi
 # Main logic
 
 echo "Proceed main logic"
-# if [[ "$1" == 'save' ]]; then
-#     CACHE_KEY=$4
-#     echo "--------------------- DEBUG MESSAGE ---------------------"
-#     echo ACTION is $ACTION
-#     echo CACHE_PATH is $CACHE_PATH
-#     echo S3_BUCKET is $S3_BUCKET
-#     echo CACHE_KEY is $CACHE_KEY
-#     echo "---------------------------------------------------------"
-#     save_cache
-# elif [[ "$1" == 'restore' ]]; then
-#     RESTORE_KEYS=$(echo $4|tr ',' ' ')
-#     echo "--------------------- DEBUG MESSAGE ---------------------"
-#     echo ACTION is $ACTION
-#     echo CACHE_PATH is $CACHE_PATH
-#     echo S3_BUCKET is $S3_BUCKET
-#     echo RESTORE_KEYS are $RESTORE_KEYS
-#     echo "---------------------------------------------------------"
-#     restore_cache
+
+echo "--------------------- DEBUG MESSAGE ---------------------"
+
+echo ACTION is $INPUT_CACHE_ACTION
+echo CACHE_PATH is $INPUT_CACHE_PATH
+echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
+echo CACHE_KEY is $INPUT_CACHE_KEY
+echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
+echo "---------------------------------------------------------"
+echo "Current directory"
+pwd
+echo "---------------------------------------------------------"
+echo I am `whoami`
+echo "---------------------------------------------------------"
 
 
+if [[ -v INPUT_CACHE_PATH ]]; then
+    CACHE_PATH=$INPUT_CACHE_PATH
+fi
+S3_BUCKET=$INPUT_S3_BUCKET_NAME
+
+if [[ "$INPUT_CACHE_ACTION" == "save" ]]; then
+    CACHE_KEY=$INPUT_CACHE_KEY
+    save_cache
+else
+    RESTORE_KEYS=$INPUT_RESTORE_KEYS
+    restore_cache
+fi
 # trap fix_owners EXIT
-
-# if [[ -v AWS_ACCESS_KEY_ID ]] && [[ -v AWS_SECRET_ACCESS_KEY ]] && [[ -v AWS_REGION ]]; then
-#     if [[ -v INPUT_CACHE_ACTION ]] && [[ -v INPUT_S3_BUCKET_NAME ]]; then
-#         if [[ "$INPUT_CACHE_ACTION" == 'save' ]] || [[ "$INPUT_CACHE_ACTION" == 'restore' ]]; then
-#             if [[ "$INPUT_CACHE_ACTION" == 'save' && -v INPUT_CACHE_KEY ]] || [[ "$INPUT_CACHE_ACTION" == 'restore' &&  -v INPUT_RESTORE_KEYS ]]; then
-        
-#                 setup_environment
-
-#             else
-#                 echo "::error:: Required parameters are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
-#                 exit 1
-#             fi
-#         else
-#             echo "::error:: Incorrect cache_action. Must be 'save' or 'restore'."
-#             exit 1
-#         fi
-#     else
-#         echo "::error:: Required parameters are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
-#         exit 1
-#     fi
-# else
-#     echo "::error:: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION must be set"
-#     exit 1
-# fi
-    
