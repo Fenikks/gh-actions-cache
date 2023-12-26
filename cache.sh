@@ -5,22 +5,27 @@ set -euo pipefail
 function validate_inputs(){
     if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
         echo 1 
+        return
     fi
 
     if [[ "$INPUT_CACHE_ACTION" != 'save' ]] && [[ "$INPUT_CACHE_ACTION" != 'restore' ]]; then
         echo 2
+        return
     fi
 
     if [[ "$INPUT_CACHE_ACTION" == "save" && -z "$INPUT_CACHE_KEY" ]]; then
         echo 1
+        return
     fi
 
     if [[ "$INPUT_CACHE_ACTION" == "restore" && -z "$INPUT_RESTORE_KEYS" ]]; then
         echo 1
+        return
     fi
 
     if [[ -z $AWS_ACCESS_KEY_ID && -z $AWS_SECRET_ACCESS_KEY && -z $AWS_REGION ]]; then
         echo 3
+        return
     fi
 
     echo 0
