@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/Fenikks/gh-actions-cache/compare/v1.0.3...v1.0.4) (2023-12-26)
+
+
+### Bug Fixes
+
+* debug ([ecb317c](https://github.com/Fenikks/gh-actions-cache/commit/ecb317ccec610c6949282cddfc10158504ad5571))
+
 ## [1.0.3](https://github.com/Fenikks/gh-actions-cache/compare/v1.0.2...v1.0.3) (2023-12-26)
 
 
