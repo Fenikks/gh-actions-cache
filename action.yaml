@@ -23,8 +23,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+  - name: Run action script
+    run: $GITHUB_ACTION_PATH/cache.sh
     shell: bash
-  - run: cache.sh
-    shell: bash
-
+    env:
+      INPUT_CACHE_ACTION: "${{ inputs.cache_action }}"
+      INPUT_CACHE_PATH: "${{ inputs.cache_path }}"
+      INPUT_S3_BUCKET_NAME: "${{ inputs.s3_bucket_name }}"
+      INPUT_CACHE_KEY: "${{ inputs.cache_key }}"
+      INPUT_RESTORE_KEYS: "${{ inputs.restore_keys }}"
