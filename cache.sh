@@ -88,7 +88,7 @@ validate_result=$(validate_inputs)
 echo validate_result is $validate_result
 
 
-#### check if all necessary variables are set
+# Check if all necessary variables are set
 
 if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
     echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
@@ -116,7 +116,7 @@ if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]
     exit 1
 fi
 
-### Main logic
+# Main logic
 
 echo "Proceed main logic"
 # if [[ "$1" == 'save' ]]; then
