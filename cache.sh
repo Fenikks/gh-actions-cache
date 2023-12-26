@@ -3,33 +3,26 @@
 set -euo pipefail
 
 function validate_inputs(){
-    echo "Inside validate_inputs"
-
     if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
-        echo "::notice:: check number 1"
         return 1 
     fi
 
     if [[ "$INPUT_CACHE_ACTION" != 'save' ]] && [[ "$INPUT_CACHE_ACTION" != 'restore' ]]; then
-        echo "::notice:: check number 2"
         return 2
     fi
 
     if [[ "$INPUT_CACHE_ACTION" == "save" && -z "$INPUT_CACHE_KEY" ]]; then
-        echo "::notice:: check number 3"
         return 1
     fi
 
     if [[ "$INPUT_CACHE_ACTION" == "restore" && -z "$INPUT_RESTORE_KEYS" ]]; then
-        echo "::notice:: check number 4"
         return 1
     fi
 
     if [[ -z $AWS_ACCESS_KEY_ID && -z $AWS_SECRET_ACCESS_KEY && -z $AWS_REGION ]]; then
-        echo "::notice:: check number 5"
         return 3
     fi
-    echo "::notice:: return 0"
+
     return 0
 }
 
@@ -109,10 +102,7 @@ echo "Current directory"
 pwd
 echo "---------------------------------------------------------"
 
-validate_inputs
 validate_result=$(validate_inputs)
-echo "validate result is"
-echo $validate_result
 
 case $validate_result in
     0) 
