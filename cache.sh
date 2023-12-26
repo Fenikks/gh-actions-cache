@@ -60,13 +60,6 @@ function restore_cache() {
     done
 }
 
-# function fix_owners() {
-#     if [[ -d "$CACHE_PATH" ]]; then
-#         chown -R --reference "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/.gh-actions-terragrunt" || true
-#         debug_cmd ls -la "$GITHUB_WORKSPACE/.gh-actions-terragrunt"
-#     fi
-# }
-
 # Check if all necessary variables are set
 
 if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
@@ -126,4 +119,3 @@ else
     RESTORE_KEYS=$INPUT_RESTORE_KEYS
     restore_cache
 fi
-# trap fix_owners EXIT
