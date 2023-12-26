@@ -4,16 +4,6 @@ set -euo pipefail
 
 function validate_inputs(){
     echo inside valudate_inputs
-    set +e
-    echo ACTION is $INPUT_CACHE_ACTION
-    echo CACHE_PATH is $INPUT_CACHE_PATH
-    echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
-    echo CACHE_KEY is $INPUT_CACHE_KEY
-    echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
-    echo AWS_REGION is $AWS_REGION
-    echo AWS_SECRET_ACCESS_KEY is $AWS_SECRET_ACCESS_KEY
-    echo AWS_ACCESS_KEY_ID is $AWS_ACCESS_KEY_ID
-    set -e
 
     if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
         echo inside check 1
@@ -35,7 +25,7 @@ function validate_inputs(){
         return 1
     fi
 
-    if [[ ! -v AWS_ACCESS_KEY_ID ]] && [[ ! -v AWS_SECRET_ACCESS_KEY ]] && [[ ! -v AWS_REGION ]]; then
+    if [[ ! -v AWS_ACCESS_KEY_ID ]] || [[ ! -v AWS_SECRET_ACCESS_KEY ]] || [[ ! -v AWS_REGION ]]; then
         echo inside check 5
         echo variable undefined
         return 1
