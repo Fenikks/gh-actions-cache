@@ -82,12 +82,6 @@ echo "Current directory"
 pwd
 echo "---------------------------------------------------------"
 
-validate_inputs
-echo "---------------------------------------------------------"
-validate_result=$(validate_inputs)
-echo validate_result is $validate_result
-
-
 # Check if all necessary variables are set
 
 if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
