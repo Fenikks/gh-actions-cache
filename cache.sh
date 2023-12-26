@@ -85,28 +85,28 @@ echo "---------------------------------------------------------"
 # Check if all necessary variables are set
 
 if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
-    echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
+    echo "::error::Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
     exit 1
 
 fi
 
 if [[ "$INPUT_CACHE_ACTION" != 'save' ]] && [[ "$INPUT_CACHE_ACTION" != 'restore' ]]; then
-    echo "::error:: Incorrect cache_action. Must be 'save' or 'restore'."
+    echo "::error::Incorrect cache_action. Must be 'save' or 'restore'."
     exit 1
 fi
 
 if [[ "$INPUT_CACHE_ACTION" == "save" && -z "$INPUT_CACHE_KEY" ]]; then
-    echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
+    echo "::error::Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
     exit 1
 fi
 
 if [[ "$INPUT_CACHE_ACTION" == "restore" && -z "$INPUT_RESTORE_KEYS" ]]; then
-    echo "::error:: Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
+    echo "::error::Required inputs are missing: cache_action, s3_bucket_name and either cache_key (if cache_action is save) or restore_keys (if cache_action is restore) must be set."
     exit 1
 fi
 
 if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]; then
-    echo "::error:: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION must be set"
+    echo "::error::AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_REGION must be set"
     exit 1
 fi
 
