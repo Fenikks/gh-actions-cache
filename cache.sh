@@ -109,6 +109,7 @@ echo "Current directory"
 pwd
 echo "---------------------------------------------------------"
 
+validate_inputs
 validate_result=$(validate_inputs)
 echo "validate result is"
 echo $validate_result
