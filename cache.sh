@@ -28,7 +28,7 @@ function validate_inputs(){
     if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]; then
         echo inside check 5
         echo variable undefined
-        return 1
+        return 3
     fi
 
     echo after all checks
