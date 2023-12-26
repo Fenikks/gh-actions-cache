@@ -96,16 +96,15 @@ function restore_cache() {
 
 # Main logic
 echo "--------------------- DEBUG MESSAGE ---------------------"
-echo reading environments
-env
-echo $GITHUB_ENV
-echo "---------------------------------------------------------"
 
 echo ACTION is $INPUT_CACHE_ACTION
 echo CACHE_PATH is $INPUT_CACHE_PATH
 echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
 echo CACHE_KEY is $INPUT_CACHE_KEY
 echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
+echo "---------------------------------------------------------"
+echo "Current directory"
+pwd
 echo "---------------------------------------------------------"
 
 validate_result=$(validate_inputs)
