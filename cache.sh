@@ -3,33 +3,46 @@
 set -euo pipefail
 
 function validate_inputs(){
+    echo inside valudate_inputs
+    set +e
+    echo ACTION is $INPUT_CACHE_ACTION
+    echo CACHE_PATH is $INPUT_CACHE_PATH
+    echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
+    echo CACHE_KEY is $INPUT_CACHE_KEY
+    echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
+    echo AWS_REGION is $AWS_REGION
+    echo AWS_SECRET_ACCESS_KEY is $AWS_SECRET_ACCESS_KEY
+    echo AWS_ACCESS_KEY_ID is $AWS_ACCESS_KEY_ID
+    set -e
+
     if [[ -z "$INPUT_CACHE_ACTION" && -z "$INPUT_S3_BUCKET_NAME" ]]; then
-        echo 1
-        return
+        echo inside check 1
+        return 1
     fi
 
     if [[ "$INPUT_CACHE_ACTION" != 'save' ]] && [[ "$INPUT_CACHE_ACTION" != 'restore' ]]; then
-        echo 2
-        return
+        echo inside check 2
+        return 2
     fi
 
     if [[ "$INPUT_CACHE_ACTION" == "save" && -z "$INPUT_CACHE_KEY" ]]; then
-        echo 1
-        return
+        echo inside check 3
+        return 1
     fi
 
     if [[ "$INPUT_CACHE_ACTION" == "restore" && -z "$INPUT_RESTORE_KEYS" ]]; then
-        echo 1
-        return
+        echo inside check 4
+        return 1
     fi
 
     if [[ ! -v AWS_ACCESS_KEY_ID ]] && [[ ! -v AWS_SECRET_ACCESS_KEY ]] && [[ ! -v AWS_REGION ]]; then
+        echo inside check 5
         echo variable undefined
         return 1
     fi
 
-    echo 0
-    return
+    echo after all checks
+    return 0
 }
 
 function save_cache() {
