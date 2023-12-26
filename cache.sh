@@ -45,6 +45,7 @@ function restore_cache() {
             echo "---------------------------------------------------------"
             tmp_dir="$(mktemp -d)"
             echo "currnet path `pwd`"
+            ls -la
             mkdir -p $CACHE_PATH
             ls -la
             time aws s3 cp s3://${S3_BUCKET}/${k//\//}/archive.tgz $tmp_dir/archive.tgz --region $AWS_REGION > /dev/null
