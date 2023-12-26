@@ -25,7 +25,7 @@ function validate_inputs(){
         return 1
     fi
 
-    if [[ ! -v AWS_ACCESS_KEY_ID ]] || [[ ! -v AWS_SECRET_ACCESS_KEY ]] || [[ ! -v AWS_REGION ]]; then
+    if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]; then
         echo inside check 5
         echo variable undefined
         return 1
@@ -115,6 +115,8 @@ echo "Current directory"
 pwd
 echo "---------------------------------------------------------"
 
+validate_inputs
+echo "---------------------------------------------------------"
 validate_result=$(validate_inputs)
 echo validate_result is $validate_result
 case $validate_result in
