@@ -23,7 +23,7 @@ function validate_inputs(){
         return
     fi
 
-    if [[ -v AWS_ACCESS_KEY_ID && -v AWS_SECRET_ACCESS_KEY && -v AWS_REGION ]]; then
+    if [[ ! -v AWS_ACCESS_KEY_ID ]] && [[ ! -v AWS_SECRET_ACCESS_KEY ]] && [[ ! -v AWS_REGION ]]; then
         echo variable undefined
         return 1
     fi
