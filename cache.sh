@@ -5,25 +5,15 @@ set -euo pipefail
 function save_cache() {
     
     if [[ $(aws s3 ls s3://${S3_BUCKET}/${CACHE_KEY}/ --region $AWS_REGION | head) ]]; then
-        echo "--------------------- DEBUG MESSAGE ---------------------"
-        echo $(aws s3 ls s3://${S3_BUCKET}/${CACHE_KEY}/ --region $AWS_REGION | head)
-        echo "---------------------------------------------------------"
         echo "Cache is already existed for key: ${CACHE_KEY}"
     else
         echo "Saving cache for key ${CACHE_KEY}"
-
-        echo "--------------------- DEBUG MESSAGE ---------------------"
-        echo current path `pwd`
-        echo "---------------------------------------------------------"
         
         tmp_dir="$(mktemp -d)"
-        echo "currnet path `pwd`"
-        (cd $CACHE_PATH && ls -l)
-        (cd $CACHE_PATH && tar czf "${tmp_dir}/archive.tgz" ./*) #> /dev/null)
-        echo "currnet path `pwd`"
+        (cd $CACHE_PATH && tar czf "${tmp_dir}/archive.tgz" ./*) 
         size="$(ls -lh "${tmp_dir}/archive.tgz" | cut -d ' ' -f 5 )"
-        
-        time aws s3 cp "${tmp_dir}/archive.tgz" "s3://${S3_BUCKET}/${CACHE_KEY}/archive.tgz" --region $AWS_REGION > /dev/null
+
+        aws s3 cp "${tmp_dir}/archive.tgz" "s3://${S3_BUCKET}/${CACHE_KEY}/archive.tgz" --region $AWS_REGION > /dev/null
         copy_exit_code=$?
         rm -rf "${tmp_dir}"
         echo "Cache size: ${size}"
@@ -38,18 +28,12 @@ function restore_cache() {
 
     for key in ${RESTORE_KEYS}; do
         if [[ $(aws s3 ls s3://${S3_BUCKET}/ --region $AWS_REGION | grep $key | head) ]]; then
-            echo "--------------------- DEBUG MESSAGE ---------------------"
-            echo $(aws s3 ls s3://${S3_BUCKET}/ --region $AWS_REGION | grep $key | head)
             k=$(aws s3 ls s3://${S3_BUCKET}/ --region $AWS_REGION | grep $key | head -n 1 | awk '{print $2}')
-            echo k is $k
-            echo "---------------------------------------------------------"
             tmp_dir="$(mktemp -d)"
-            echo "currnet path `pwd`"
-            ls -la
             mkdir -p $CACHE_PATH
-            ls -la
-            time aws s3 cp s3://${S3_BUCKET}/${k//\//}/archive.tgz $tmp_dir/archive.tgz --region $AWS_REGION > /dev/null
-            tar xzf "${tmp_dir}/archive.tgz" -C $CACHE_PATH #> /dev/null
+
+            aws s3 cp s3://${S3_BUCKET}/${k//\//}/archive.tgz $tmp_dir/archive.tgz --region $AWS_REGION > /dev/null
+            tar xzf "${tmp_dir}/archive.tgz" -C $CACHE_PATH
         
             echo "Restoring cache for key ${key}"
             du -sm ${CACHE_PATH}/*
@@ -89,23 +73,6 @@ if [[ ! -v AWS_ACCESS_KEY_ID || ! -v AWS_SECRET_ACCESS_KEY || ! -v AWS_REGION ]]
 fi
 
 # Main logic
-
-echo "Proceed main logic"
-
-echo "--------------------- DEBUG MESSAGE ---------------------"
-
-echo ACTION is $INPUT_CACHE_ACTION
-echo CACHE_PATH is $INPUT_CACHE_PATH
-echo S3_BUCKET is $INPUT_S3_BUCKET_NAME
-echo CACHE_KEY is $INPUT_CACHE_KEY
-echo RESTORE_KEYS is $INPUT_RESTORE_KEYS
-echo "---------------------------------------------------------"
-echo "Current directory"
-pwd
-echo "---------------------------------------------------------"
-echo I am `whoami`
-echo "---------------------------------------------------------"
-
 
 if [[ -v INPUT_CACHE_PATH ]]; then
     CACHE_PATH=$INPUT_CACHE_PATH

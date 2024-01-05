@@ -45,7 +45,7 @@ This action allows caching dependencies and saving them in an AWS S3 bucket to r
   You can specify multiple keys by putting each key on its own line:
     ```yaml
     restore_keys: |-
-      ${{ runner.os }}-cache-${{ hashfiles('**/.package.json.lock') }}
+      ${{ runner.os }}-cache-${{ hashfiles('**/.package-lock.json') }}
       ${{ runner.os }}-cache
     ```
   The first matching key will be restored. 
@@ -77,7 +77,7 @@ jobs:
         cache_action: save
         cache_path: ${GITHUB_WORKSPACE}/.cache
         s3_bucket_name: my_s3_bucket
-        cache_key: ${{ runner.os }}-cache-${{ hashfiles('**/.package.json.lock') }}
+        cache_key: ${{ runner.os }}-cache-${{ hashfiles('**/.package-lock.json') }}
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -106,7 +106,7 @@ jobs:
         cache_path: ${GITHUB_WORKSPACE}/.cache
         s3_bucket_name: my_s3_bucket
         restore_keys: |
-          ${{ runner.os }}-cache-${{ hashfiles('**/.package.json.lock') }}
+          ${{ runner.os }}-cache-${{ hashfiles('**/.package-lock.json') }}
           ${{ runner.os }}-cache
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
